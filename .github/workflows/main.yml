@@ -1,0 +1,32 @@
+name: CI
+
+env:
+  SPARK_VERSION: 3.0.0
+  TAGS: latest,3.0.0,3.0
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run tests
+        run: bash tests/.run_tests.sh
+
+      - name: Set current date as env variable
+        run: echo "::set-env name=BUILD_DATE::$(date)"
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: godatadriven/pyspark
+          build_args: SPARK_VERSION=${{ SPARK_VERSION }},BUILD_DATE=${{ BUILD_DATE }}
+          tags: ${{ TAGS }}
+          push: ${{ github.ref == 'master'}}
