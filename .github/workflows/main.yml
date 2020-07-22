@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run tests
-        run: bash ./tests/.run_tests.sh
+        run: echo $(pwd) && ls -al #bash ./tests/.run_tests.sh
 
       - name: Build and push Docker images
         uses: docker/build-push-action@v1
