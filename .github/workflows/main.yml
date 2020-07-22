@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run tests
-        run: ./tests/.run_tests.sh
+        run: /home/runner/work/pyspark/pyspark/tests/.run_tests.sh
 
       - name: Build and push Docker images
         uses: docker/build-push-action@v1
