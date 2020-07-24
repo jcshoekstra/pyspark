@@ -22,4 +22,4 @@ jobs:
         run: echo "::set-env name=SPARK_VERSION::${DOCKER_TAG%%,*}"
 
       - name: Build image
-        run: docker build --build-arg BUILD_DATE=${BUILD_DATE} --build-arg SPARK_VERSION=${SPARK_VERSION} -t $DOCKER_REPO:${DOCKER_TAG//,/ -t $DOCKER_REPO:} .
+        run: docker build --build-arg BUILD_DATE="${BUILD_DATE}" --build-arg SPARK_VERSION="${SPARK_VERSION}" -t $DOCKER_REPO:${DOCKER_TAG//,/ -t $DOCKER_REPO:} .
