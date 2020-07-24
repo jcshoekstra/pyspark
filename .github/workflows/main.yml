@@ -2,19 +2,26 @@ name: CI
 
 on: [push, pull_request]
 
+env:
+  DOCKER_REPO: godatadriven/pyspark
+  DOCKER_TAG: 3.0.0,3.0,latest
+
 jobs:
   build:
     name: build
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 30
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set current date as env variable
+        run: echo "::set-env name=BUILD_DATE::$(date)"
+        
+      - name: Set spark version based on docker tag
+        run: echo "::set-env name=SPARK_VERSION::${DOCKER_TAG%%,*}"
+
       - name: Build image
-        uses: docker/build-action@v1
-        with:
-          repository: godatadriven/pyspark
-          build_args: SPARK_VERSION=3.0.0
-          add_git_labels: true
-          tags: latest,3.0.0,3.0
+        run: docker build --build-arg BUILD_DATE=$BUILD_DATE \ 
+            --build-arg SPARK_VERSION=$SPARK_VERSION \
+            -t $DOCKER_REPO:${DOCKER_TAG//,/ -t $DOCKER_REPO:} .
