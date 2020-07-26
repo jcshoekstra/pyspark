@@ -26,6 +26,6 @@ jobs:
 
       - name: Test image
         run: |
-            IMAGE_NAME="$DOCKER_REPO:$SPARK_VERSION"
+            export IMAGE_NAME="$DOCKER_REPO:$SPARK_VERSION"
             docker-compose --file docker-compose.test.yml build
             docker-compose --file docker-compose.test.yml run sut
