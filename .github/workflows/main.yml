@@ -22,10 +22,10 @@ jobs:
         run: echo "::set-env name=BUILD_DATE::$(date)"
         
       - name: Set spark version based on docker tag
-        run: echo "::set-env name=SPARK_VERSION::${${{ matrix.DOCKER_TAG }}%%,*}"
+        run: echo "::set-env name=SPARK_VERSION::${'${{ matrix.DOCKER_TAG }}'%%,*}"
 
       - name: Build image
-        run: docker build --build-arg BUILD_DATE="${BUILD_DATE}" --build-arg SPARK_VERSION="${SPARK_VERSION}" -t $DOCKER_REPO:${${{ matrix.DOCKER_TAG }}//,/ -t $DOCKER_REPO:} .
+        run: docker build --build-arg BUILD_DATE="${BUILD_DATE}" --build-arg SPARK_VERSION="${SPARK_VERSION}" -t $DOCKER_REPO:${'${{ matrix.DOCKER_TAG }}'//,/ -t $DOCKER_REPO:} .
 
       - name: Test image
         run: |
